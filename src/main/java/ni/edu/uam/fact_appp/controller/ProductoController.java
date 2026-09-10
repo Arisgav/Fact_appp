@@ -83,7 +83,9 @@ public class ProductoController {
                         "Precio mayor que cero y existencia no negativa.");
                 return;
             }
-            productos.add(new Producto(null, txtCodigo.getText().trim(),txtNombre.getText().trim(), cmbCategoria.getValue(), precio,existencia, rutaImagen, chkActivo.isSelected()));
+            productos.add(new Producto(null, txtCodigo.getText().trim(),
+                    txtNombre.getText().trim(), precio, cmbCategoria.getValue(),
+                    existencia, rutaImagen, chkActivo.isSelected()));
             mensaje(Alert.AlertType.INFORMATION, "Producto agregado correctamente.");
             limpiar();
         } catch (NumberFormatException e) {

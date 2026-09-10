@@ -5,6 +5,9 @@ import lombok.*;
 public class Categoria {
 
 
+    public Categoria(int i, String limpieza, boolean b) {
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

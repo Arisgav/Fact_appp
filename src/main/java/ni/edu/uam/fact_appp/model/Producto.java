@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Producto {
 
-
     private Integer id;
+    private String codigo;
     private String nombre;
     private BigDecimal precioVenta;
     private Categoria categoria;
-    private int exitencia;
+    private int existencia;
     private String rutaImagen;
     private boolean activo;
 

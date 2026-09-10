@@ -2,6 +2,9 @@ package ni.edu.uam.fact_appp.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import ni.edu.uam.fact_appp.util.SceneManager;
@@ -17,6 +20,7 @@ public class MenuPrincipalController {
                     "/ni/edu/uam/fact_appp/fxml/producto-view.fxml",
                     "Gestión de productos");
         } catch (IOException e) {
+            e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,
                     "No fue posible abrir Productos.").showAndWait();
         }

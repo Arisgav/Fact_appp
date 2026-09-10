@@ -10,7 +10,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
+            fx:controller="ni.edu.uam.fact_appp.controller.ProductoController"
             prefHeight="600.0" prefWidth="800.0">
 
     <children>
@@ -80,12 +80,12 @@
                     <children>
                         <TableView fx:id="tblProductos" prefHeight="200.0">
                             <columns>
-                                <TableColumn text="Código" />
-                                <TableColumn text="Nombre" />
-                                <TableColumn text="Categoría" />
-                                <TableColumn text="Precio" />
-                                <TableColumn text="Existencia" />
-                                <TableColumn text="Activo" />
+                                <TableColumn fx:id="colCodigo" text="Código" />
+                                <TableColumn fx:id="colNombre" text="Nombre" />
+                                <TableColumn fx:id="colCategoria" text="Categoría" />
+                                <TableColumn fx:id="colPrecio" text="Precio" />
+                                <TableColumn fx:id="colExistencia" text="Existencia" />
+                                <TableColumn fx:id="colActivo" text="Activo" />
                             </columns>
                         </TableView>
 
