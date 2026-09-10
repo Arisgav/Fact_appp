@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_appp.controller.MenuPrincipalController">
 
@@ -34,11 +36,31 @@
                 </VBox>
             </top>
             <center>
-                <ImageView fitHeight="190.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                    <image>
-                        <Image url="@../images/logo.png" />
-                    </image>
-                </ImageView>
+                <StackPane BorderPane.alignment="CENTER">
+                    <children>
+                        <!-- Fondo animado: GIF de lluvia de monedas -->
+                        <ImageView fitHeight="310.0" fitWidth="750.0" pickOnBounds="true" preserveRatio="false">
+                            <image>
+                                <Image url="@../images/lluviamonedas.gif" />
+                            </image>
+                        </ImageView>
+
+                        <!-- Logo encima del fondo -->
+                        <ImageView fitHeight="200.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/logo.png" />
+                            </image>
+                        </ImageView>
+                  <Label text="Sistema de Facturacion" textFill="#bcb911">
+                     <StackPane.margin>
+                        <Insets bottom="400.0" />
+                     </StackPane.margin>
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                    </children>
+                </StackPane>
             </center>
 
         </BorderPane>
