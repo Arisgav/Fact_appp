@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ni.edu.uam.fact_appp.controller.MenuPrincipalController"
-            prefHeight="500.0" prefWidth="750.0">
+<AnchorPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_appp.controller.MenuPrincipalController">
 
     <children>
-        <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
             <top>
                 <VBox>
@@ -24,9 +16,9 @@
                             <menus>
                                 <Menu text="Archivo">
                                     <items>
-                                        <MenuItem fx:id="mnuProductos" text="Productos" onAction="#abrirProductos" />
+                                        <MenuItem fx:id="mnuProductos" onAction="#abrirProductos" text="Productos" />
                                         <SeparatorMenuItem />
-                                        <MenuItem fx:id="mnuSalir" text="Salir" onAction="#salir" />
+                                        <MenuItem fx:id="mnuSalir" onAction="#salir" text="Salir" />
                                     </items>
                                 </Menu>
                             </menus>
@@ -34,23 +26,19 @@
 
                         <ToolBar>
                             <items>
-                                <Button fx:id="btnProductos" text="Productos" onAction="#abrirProductos" />
-                                <Button fx:id="btnSalir" text="Salir" onAction="#salir" />
+                                <Button fx:id="btnProductos" onAction="#abrirProductos" text="Productos" />
+                                <Button fx:id="btnSalir" onAction="#salir" text="Salir" />
                             </items>
                         </ToolBar>
                     </children>
                 </VBox>
             </top>
-
             <center>
-                <Label text="Sistema de facturación">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                    <BorderPane.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </BorderPane.margin>
-                </Label>
+                <ImageView fitHeight="190.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                    <image>
+                        <Image url="@../Images/logo.png" />
+                    </image>
+                </ImageView>
             </center>
 
         </BorderPane>
