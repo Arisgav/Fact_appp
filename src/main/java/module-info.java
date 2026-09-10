@@ -4,6 +4,7 @@ module ni.edu.uam.fact_appp {
     requires static lombok;
 
 
-    opens ni.edu.uam.fact_appp to javafx.fxml;
+    opens ni.edu.uam.fact_appp.controller to javafx.fxml;
+
     exports ni.edu.uam.fact_appp;
 }
