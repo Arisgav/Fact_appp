@@ -34,6 +34,7 @@ public class MenuPrincipalController {
 
     @FXML private Button btnProductos;
     @FXML private Button btnCategorias;
+    @FXML private Button btnCargos;
     @FXML private Button btnSalir;
 
     @FXML
@@ -67,6 +68,7 @@ public class MenuPrincipalController {
 
         estilizarBoton(btnProductos);
         estilizarBoton(btnCategorias);
+        estilizarBoton(btnCargos);
         estilizarBoton(btnSalir);
     }
 
@@ -109,6 +111,19 @@ public class MenuPrincipalController {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,
                     "No fue posible abrir Categorías.").showAndWait();
+        }
+    }
+
+    @FXML
+    private void abrirCargos() {
+        try {
+            SceneManager.abrirVentana(
+                    "/ni/edu/uam/fact_appp/fxml/Cargo.fxml",
+                    "Gestión de cargos");
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "No fue posible abrir Cargos.").showAndWait();
         }
     }
 
