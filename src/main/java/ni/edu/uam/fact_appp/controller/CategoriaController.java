@@ -53,6 +53,25 @@ public class CategoriaController {
     }
 
     @FXML
+    private void quitarCategoria() {
+        Categoria seleccionada = tblCategorias.getSelectionModel().getSelectedItem();
+
+        if (seleccionada == null) {
+            mensaje(Alert.AlertType.WARNING, "Selecciona una categoría de la lista para quitar.");
+            return;
+        }
+
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION,
+                "¿Deseas quitar la categoría \"" + seleccionada.getNombre() + "\"?",
+                ButtonType.OK, ButtonType.CANCEL);
+
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            Categoria.LISTA.remove(seleccionada);
+            limpiar();
+        }
+    }
+
+    @FXML
     private void cerrarCategoria() {
         ((Stage) txtNombreCategoria.getScene().getWindow()).close();
     }
@@ -60,6 +79,7 @@ public class CategoriaController {
     private void limpiar() {
         txtNombreCategoria.clear();
         chkActivaCategoria.setSelected(true);
+        tblCategorias.getSelectionModel().clearSelection();
     }
 
     private void mensaje(Alert.AlertType tipo, String texto) {

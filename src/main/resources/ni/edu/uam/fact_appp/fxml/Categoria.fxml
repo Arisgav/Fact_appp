@@ -56,6 +56,7 @@
                             </padding>
                             <children>
                                 <Button fx:id="btnGuardarCategoria" text="Guardar" onAction="#guardarCategoria" />
+                                <Button fx:id="btnQuitarCategoria" text="Quitar" onAction="#quitarCategoria" />
                                 <Button fx:id="btnCerrarCategoria" text="Cerrar" onAction="#cerrarCategoria" />
                             </children>
                         </HBox>
