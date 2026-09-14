@@ -21,6 +21,7 @@
                                     <items>
                                         <MenuItem fx:id="mnuProductos" onAction="#abrirProductos" text="Productos" />
                                         <MenuItem fx:id="mnuCategorias" onAction="#abrirCategorias" text="Categorías" />
+                                        <MenuItem fx:id="mnuCargos" onAction="#abrirCargos" text="Cargos" />
                                         <SeparatorMenuItem />
                                         <MenuItem fx:id="mnuSalir" onAction="#salir" text="Salir" />
                                     </items>
@@ -53,6 +54,19 @@
                                     </graphic>
                                     <tooltip>
                                         <Tooltip text="Categorías" />
+                                    </tooltip>
+                                </Button>
+
+                                <Button fx:id="btnCargos" onAction="#abrirCargos">
+                                    <graphic>
+                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/Cargo.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip text="Cargos" />
                                     </tooltip>
                                 </Button>
 
