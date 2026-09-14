@@ -6,15 +6,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_appp.controller.MenuPrincipalController">
+<AnchorPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ni.edu.uam.fact_appp.controller.MenuPrincipalController">
 
     <children>
-        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane fx:id="rootPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
             <top>
                 <VBox>
                     <children>
-                        <MenuBar>
+                        <MenuBar fx:id="menuBar">
                             <menus>
                                 <Menu text="Archivo">
                                     <items>
@@ -27,7 +28,7 @@
                             </menus>
                         </MenuBar>
 
-                        <ToolBar>
+                        <ToolBar fx:id="toolBar">
                             <items>
                                 <Button fx:id="btnProductos" onAction="#abrirProductos">
                                     <graphic>
@@ -55,7 +56,14 @@
                                     </tooltip>
                                 </Button>
 
-                                <Button fx:id="btnSalir" onAction="#salir" text="❌">
+                                <Button fx:id="btnSalir" onAction="#salir">
+                                    <graphic>
+                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/Salir.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
                                     <tooltip>
                                         <Tooltip text="Salir" />
                                     </tooltip>
@@ -65,25 +73,20 @@
                     </children>
                 </VBox>
             </top>
-            <center>
-                <StackPane BorderPane.alignment="CENTER">
-                    <children>
-                        <!-- Fondo animado: GIF de lluvia de monedas -->
-                        <ImageView fitHeight="310.0" fitWidth="750.0" pickOnBounds="true" preserveRatio="false">
-                            <image>
-                                <Image url="@../images/lluviamonedas.gif" />
-                            </image>
-                        </ImageView>
 
-                        <!-- Logo encima del fondo -->
+            <center>
+                <StackPane fx:id="centerStack" BorderPane.alignment="CENTER">
+                    <children>
+                        <!-- Logo, sin GIF de fondo -->
                         <ImageView fitHeight="200.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../images/logo.png" />
                             </image>
                         </ImageView>
-                        <Label text="Sistema de Facturacion" textFill="#bcb911">
+
+                        <Label fx:id="lblTitulo" text="Sistema de Facturación">
                             <StackPane.margin>
-                                <Insets bottom="400.0" />
+                                <Insets bottom="330.0" />
                             </StackPane.margin>
                             <font>
                                 <Font size="27.0" />
