@@ -33,7 +33,7 @@
                                     <graphic>
                                         <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../icons/productos.png" />
+                                                <Image url="@../images/productos.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -46,7 +46,7 @@
                                     <graphic>
                                         <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../icons/categoria.png" />
+                                                <Image url="@../images/categorias.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -55,14 +55,7 @@
                                     </tooltip>
                                 </Button>
 
-                                <Button fx:id="btnSalir" onAction="#salir">
-                                    <graphic>
-                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
-                                            <image>
-                                                <Image url="@../icons/salir.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
+                                <Button fx:id="btnSalir" onAction="#salir" text="❌">
                                     <tooltip>
                                         <Tooltip text="Salir" />
                                     </tooltip>
