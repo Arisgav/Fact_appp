@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import ni.edu.uam.fact_appp.util.SceneManager;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class MenuPrincipalController {
     @FXML private BorderPane rootPane;
     @FXML private MenuBar menuBar;
     @FXML private ToolBar toolBar;
-    @FXML private StackPane centerStack;
+    @FXML private VBox centerStack;
     @FXML private Label lblTitulo;
 
     @FXML private Button btnProductos;

@@ -75,25 +75,21 @@
             </top>
 
             <center>
-                <StackPane fx:id="centerStack" BorderPane.alignment="CENTER">
+                <VBox fx:id="centerStack" alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
                     <children>
-                        <!-- Logo, sin GIF de fondo -->
-                        <ImageView fitHeight="200.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/logo.png" />
-                            </image>
-                        </ImageView>
-
                         <Label fx:id="lblTitulo" text="Sistema de Facturación">
-                            <StackPane.margin>
-                                <Insets bottom="330.0" />
-                            </StackPane.margin>
                             <font>
                                 <Font size="27.0" />
                             </font>
                         </Label>
+
+                        <ImageView fitHeight="200.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/LogoMenu.png" />
+                            </image>
+                        </ImageView>
                     </children>
-                </StackPane>
+                </VBox>
             </center>
 
         </BorderPane>

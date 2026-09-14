@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -17,6 +20,16 @@ import java.io.File;
 import java.math.BigDecimal;
 
 public class ProductoController {
+
+    // ---- Misma paleta clara usada en el menú principal ----
+    private static final String COLOR_FONDO = "#ffffff";
+    private static final String COLOR_BORDE = "#e2e5ea";
+    private static final String COLOR_ACENTO = "#2b6777";
+
+    @FXML private BorderPane rootPane;
+    @FXML private GridPane formPane;
+    @FXML private VBox previewBox;
+    @FXML private VBox bottomBox;
 
     @FXML private TextField txtCodigo;
     @FXML private TextField txtNombre;
@@ -34,6 +47,11 @@ public class ProductoController {
     @FXML private TableColumn<Producto, Integer> colExistencia;
     @FXML private TableColumn<Producto, Boolean> colActivo;
 
+    @FXML private Button btnImagen;
+    @FXML private Button btnLimpiar;
+    @FXML private Button btnGuardar;
+    @FXML private Button btnCerrar;
+
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
     private String rutaImagen;
 
@@ -48,8 +66,50 @@ public class ProductoController {
         colExistencia.setCellValueFactory(new PropertyValueFactory<>("existencia"));
         colActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
 
+        // Las columnas se reparten todo el ancho de la tabla, sin espacio muerto
+        tblProductos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tblProductos.setItems(productos);
+
         chkActivo.setSelected(true);
+
+        aplicarTema();
+    }
+
+    private void aplicarTema() {
+        formPane.setStyle("-fx-background-color: " + COLOR_FONDO + ";");
+        bottomBox.setStyle(
+                "-fx-background-color: " + COLOR_FONDO + ";"
+                        + "-fx-border-color: " + COLOR_BORDE + ";"
+                        + "-fx-border-width: 1 0 0 0;"
+        );
+
+        // Marco visible para la vista previa, aunque todavía no haya imagen
+        previewBox.setStyle(
+                "-fx-background-color: #f7f8fa;"
+                        + "-fx-border-color: " + COLOR_BORDE + ";"
+                        + "-fx-border-radius: 8;"
+                        + "-fx-background-radius: 8;"
+        );
+
+        btnGuardar.setStyle(
+                "-fx-background-color: " + COLOR_ACENTO + ";"
+                        + "-fx-text-fill: white;"
+                        + "-fx-font-weight: bold;"
+                        + "-fx-background-radius: 6;"
+                        + "-fx-padding: 6 16 6 16;"
+                        + "-fx-cursor: hand;"
+        );
+
+        String estiloSecundario =
+                "-fx-background-color: transparent;"
+                        + "-fx-border-color: " + COLOR_BORDE + ";"
+                        + "-fx-border-radius: 6;"
+                        + "-fx-background-radius: 6;"
+                        + "-fx-padding: 6 16 6 16;"
+                        + "-fx-cursor: hand;";
+        btnLimpiar.setStyle(estiloSecundario);
+        btnCerrar.setStyle(estiloSecundario);
+        btnImagen.setStyle(estiloSecundario);
     }
 
     @FXML
@@ -84,7 +144,7 @@ public class ProductoController {
                     txtNombre.getText().trim(), precio, cmbCategoria.getValue(),
                     existencia, rutaImagen, chkActivo.isSelected()));
             mensaje(Alert.AlertType.INFORMATION, "Producto agregado correctamente.");
-            limpiar();
+            limpiarFormulario();
         } catch (NumberFormatException e) {
             mensaje(Alert.AlertType.ERROR, "Precio o existencia no válidos.");
         }
@@ -95,7 +155,23 @@ public class ProductoController {
         ((Stage) txtCodigo.getScene().getWindow()).close();
     }
 
-    private void limpiar() {
+    @FXML
+    private void eliminarSeleccionado() {
+        Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            mensaje(Alert.AlertType.WARNING, "Selecciona un producto de la tabla para eliminar.");
+            return;
+        }
+
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION,
+                "¿Eliminar el producto \"" + seleccionado.getNombre() + "\"?",
+                ButtonType.OK, ButtonType.CANCEL);
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            productos.remove(seleccionado);
+        }
+    }
+
+    private void limpiarFormulario() {
         txtCodigo.clear();
         txtNombre.clear();
         txtPrecio.clear();
