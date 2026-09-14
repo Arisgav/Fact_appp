@@ -19,6 +19,7 @@
                                 <Menu text="Archivo">
                                     <items>
                                         <MenuItem fx:id="mnuProductos" onAction="#abrirProductos" text="Productos" />
+                                        <MenuItem fx:id="mnuCategorias" onAction="#abrirCategorias" text="Categorías" />
                                         <SeparatorMenuItem />
                                         <MenuItem fx:id="mnuSalir" onAction="#salir" text="Salir" />
                                     </items>
@@ -28,8 +29,44 @@
 
                         <ToolBar>
                             <items>
-                                <Button fx:id="btnProductos" onAction="#abrirProductos" text="Productos" />
-                                <Button fx:id="btnSalir" onAction="#salir" text="Salir" />
+                                <Button fx:id="btnProductos" onAction="#abrirProductos">
+                                    <graphic>
+                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../icons/productos.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip text="Productos" />
+                                    </tooltip>
+                                </Button>
+
+                                <Button fx:id="btnCategorias" onAction="#abrirCategorias">
+                                    <graphic>
+                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../icons/categoria.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip text="Categorías" />
+                                    </tooltip>
+                                </Button>
+
+                                <Button fx:id="btnSalir" onAction="#salir">
+                                    <graphic>
+                                        <ImageView fitWidth="24.0" fitHeight="24.0" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../icons/salir.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip text="Salir" />
+                                    </tooltip>
+                                </Button>
                             </items>
                         </ToolBar>
                     </children>
@@ -51,14 +88,14 @@
                                 <Image url="@../images/logo.png" />
                             </image>
                         </ImageView>
-                  <Label text="Sistema de Facturacion" textFill="#bcb911">
-                     <StackPane.margin>
-                        <Insets bottom="400.0" />
-                     </StackPane.margin>
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
+                        <Label text="Sistema de Facturacion" textFill="#bcb911">
+                            <StackPane.margin>
+                                <Insets bottom="400.0" />
+                            </StackPane.margin>
+                            <font>
+                                <Font size="27.0" />
+                            </font>
+                        </Label>
                     </children>
                 </StackPane>
             </center>
