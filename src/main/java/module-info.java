@@ -2,6 +2,7 @@ module ni.edu.uam.fact_appp {
     requires javafx.controls;
     requires javafx.fxml;
     requires static lombok;
+    requires java.sql;
 
     opens ni.edu.uam.fact_appp.application to javafx.graphics;
     opens ni.edu.uam.fact_appp.controller to javafx.fxml;
