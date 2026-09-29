@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ni.edu.uam.fact_appp.controller.LoginController"
+      alignment="CENTER" spacing="12.0"
+      style="-fx-background-color: #ffffff;">
+
+    <padding>
+        <Insets top="30.0" bottom="30.0" left="30.0" right="30.0" />
+    </padding>
+
+    <children>
+        <Label text="Sistema de Facturación" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+        <Label text="Usuario:" />
+        <TextField fx:id="txtUsuario" promptText="Usuario" maxWidth="240.0" />
+
+        <Label text="Contraseña:" />
+        <PasswordField fx:id="txtPassword" promptText="Contraseña" maxWidth="240.0" />
+
+        <Button text="Iniciar sesión" onAction="#iniciarSesion"
+                style="-fx-background-color: #2b6777; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 6 20 6 20; -fx-cursor: hand;" />
+
+        <Label fx:id="lblError" style="-fx-text-fill: #c0392b;" />
+    </children>
+</VBox>

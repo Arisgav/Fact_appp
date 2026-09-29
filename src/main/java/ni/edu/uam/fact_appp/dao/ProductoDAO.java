@@ -1,4 +1,4 @@
-package ni.edu.uam.dao;
+package ni.edu.uam.fact_appp.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,7 +6,6 @@ import ni.edu.uam.fact_appp.model.Categoria;
 import ni.edu.uam.fact_appp.model.Producto;
 import ni.edu.uam.fact_appp.util.DatabaseConnection;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

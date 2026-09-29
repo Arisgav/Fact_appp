@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Clase utilitaria para obtener conexiones a la base de datos PostgreSQL.
- * Ajusta URL, USER y PASSWORD según tu configuración local.
+ * Ajusta URL, USER y PASSWORD según tu configuración local (pgAdmin / psql).
  */
 public final class DatabaseConnection {
 
@@ -17,7 +17,17 @@ public final class DatabaseConnection {
     private DatabaseConnection() {
     }
 
+    /**
+     * Abre una nueva conexión a PostgreSQL.
+     * Se recomienda usarla dentro de un try-with-resources en cada DAO,
+     * para que la conexión se cierre automáticamente al terminar la consulta.
+     */
     public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("No se encontró el driver de PostgreSQL en el classpath.", e);
+        }
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }

@@ -1,6 +1,5 @@
 package ni.edu.uam.fact_appp.controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,11 +12,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import ni.edu.uam.fact_appp.dao.CategoriaDAO;
+import ni.edu.uam.fact_appp.dao.ProductoDAO;
 import ni.edu.uam.fact_appp.model.Categoria;
 import ni.edu.uam.fact_appp.model.Producto;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 public class ProductoController {
 
@@ -52,13 +54,12 @@ public class ProductoController {
     @FXML private Button btnGuardar;
     @FXML private Button btnCerrar;
 
-    private final ObservableList<Producto> productos = FXCollections.observableArrayList();
+    private final ProductoDAO productoDAO = new ProductoDAO();
+    private final CategoriaDAO categoriaDAO = new CategoriaDAO();
     private String rutaImagen;
 
     @FXML
     private void initialize() {
-        cmbCategoria.setItems(Categoria.LISTA);
-
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
@@ -68,11 +69,34 @@ public class ProductoController {
 
         // Las columnas se reparten todo el ancho de la tabla, sin espacio muerto
         tblProductos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tblProductos.setItems(productos);
 
         chkActivo.setSelected(true);
 
+        cargarCategorias();
+        cargarProductos();
         aplicarTema();
+    }
+
+    private void cargarCategorias() {
+        try {
+            ObservableList<Categoria> categorias = categoriaDAO.listar();
+            cmbCategoria.setItems(categorias);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            mensaje(Alert.AlertType.ERROR,
+                    "No fue posible cargar las categorías desde la base de datos.\n" + e.getMessage());
+        }
+    }
+
+    private void cargarProductos() {
+        try {
+            ObservableList<Producto> productos = productoDAO.listar();
+            tblProductos.setItems(productos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            mensaje(Alert.AlertType.ERROR,
+                    "No fue posible cargar los productos desde la base de datos.\n" + e.getMessage());
+        }
     }
 
     private void aplicarTema() {
@@ -140,13 +164,28 @@ public class ProductoController {
                         "Precio mayor que cero y existencia no negativa.");
                 return;
             }
-            productos.add(new Producto(null, txtCodigo.getText().trim(),
+
+            String codigo = txtCodigo.getText().trim();
+            if (productoDAO.existePorCodigo(codigo)) {
+                mensaje(Alert.AlertType.WARNING, "Ya existe un producto con ese código.");
+                return;
+            }
+
+            Producto nuevo = new Producto(null, codigo,
                     txtNombre.getText().trim(), precio, cmbCategoria.getValue(),
-                    existencia, rutaImagen, chkActivo.isSelected()));
+                    existencia, rutaImagen, chkActivo.isSelected());
+
+            productoDAO.insertar(nuevo);
+
             mensaje(Alert.AlertType.INFORMATION, "Producto agregado correctamente.");
             limpiarFormulario();
+            cargarProductos();
         } catch (NumberFormatException e) {
             mensaje(Alert.AlertType.ERROR, "Precio o existencia no válidos.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            mensaje(Alert.AlertType.ERROR,
+                    "No fue posible guardar el producto.\n" + e.getMessage());
         }
     }
 
@@ -167,7 +206,14 @@ public class ProductoController {
                 "¿Eliminar el producto \"" + seleccionado.getNombre() + "\"?",
                 ButtonType.OK, ButtonType.CANCEL);
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            productos.remove(seleccionado);
+            try {
+                productoDAO.eliminar(seleccionado.getId());
+                cargarProductos();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                mensaje(Alert.AlertType.ERROR,
+                        "No fue posible eliminar el producto.\n" + e.getMessage());
+            }
         }
     }
 

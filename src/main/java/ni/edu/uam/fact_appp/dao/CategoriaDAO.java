@@ -1,4 +1,4 @@
-package ni.edu.uam.dao;
+package ni.edu.uam.fact_appp.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
