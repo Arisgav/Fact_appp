@@ -1,6 +1,9 @@
 package ni.edu.uam.fact_appp.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -10,11 +13,13 @@ import ni.edu.uam.fact_appp.dao.CategoriaDAO;
 import ni.edu.uam.fact_appp.model.Categoria;
 
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class CategoriaController {
 
     @FXML private TextField txtNombreCategoria;
     @FXML private CheckBox chkActivaCategoria;
+    @FXML private TextField txtBuscarCategoria;
     @FXML private TableView<Categoria> tblCategorias;
 
     @FXML private TableColumn<Categoria, String> colNombreCategoria;
@@ -22,24 +27,53 @@ public class CategoriaController {
 
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();
 
+    /** Lista maestra: siempre contiene TODAS las categorías cargadas de la BD. */
+    private final ObservableList<Categoria> categorias = FXCollections.observableArrayList();
+
+    /** Envuelve a "categorias"; su predicado decide qué filas se muestran. */
+    private FilteredList<Categoria> categoriasFiltradas;
+
     @FXML
     private void initialize() {
         colNombreCategoria.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colActivaCategoria.setCellValueFactory(new PropertyValueFactory<>("activa"));
 
         chkActivaCategoria.setSelected(true);
+
+        // ObservableList -> FilteredList -> (SortedList) -> TableView
+        categoriasFiltradas = new FilteredList<>(categorias, c -> true);
+        SortedList<Categoria> categoriasOrdenadas = new SortedList<>(categoriasFiltradas);
+        categoriasOrdenadas.comparatorProperty().bind(tblCategorias.comparatorProperty());
+        tblCategorias.setItems(categoriasOrdenadas);
+
+        // Búsqueda por nombre: se reevalúa en cada tecla
+        txtBuscarCategoria.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltro());
+
         cargarCategorias();
     }
 
     private void cargarCategorias() {
         try {
             ObservableList<Categoria> lista = categoriaDAO.listar();
-            tblCategorias.setItems(lista);
+            categorias.setAll(lista); // conserva el FilteredList ya conectado a la tabla
         } catch (SQLException e) {
             e.printStackTrace();
             mensaje(Alert.AlertType.ERROR,
                     "No fue posible cargar las categorías desde la base de datos.\n" + e.getMessage());
         }
+    }
+
+    private void aplicarFiltro() {
+        String texto = txtBuscarCategoria.getText() == null
+                ? "" : txtBuscarCategoria.getText().trim().toLowerCase(Locale.ROOT);
+
+        categoriasFiltradas.setPredicate(categoria -> {
+            if (texto.isEmpty()) {
+                return true;
+            }
+            return categoria.getNombre() != null
+                    && categoria.getNombre().toLowerCase(Locale.ROOT).contains(texto);
+        });
     }
 
     @FXML
