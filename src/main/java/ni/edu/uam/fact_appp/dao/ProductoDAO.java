@@ -24,8 +24,7 @@ public class ProductoDAO {
     public ObservableList<Producto> listar() throws SQLException {
         ObservableList<Producto> lista = FXCollections.observableArrayList();
 
-        String sql = "SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, "
-                + "p.ruta_imagen, p.activo, "
+        String sql = "SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, p.activo, "
                 + "c.id AS categoria_id, c.nombre AS categoria_nombre, c.activa AS categoria_activa "
                 + "FROM producto p "
                 + "JOIN categoria c ON c.id = p.categoria_id "
@@ -46,10 +45,9 @@ public class ProductoDAO {
                         rs.getInt("id"),
                         rs.getString("codigo"),
                         rs.getString("nombre"),
-                        rs.getBigDecimal("precio_venta"),
                         categoria,
+                        rs.getBigDecimal("precio_venta"),
                         rs.getInt("existencia"),
-                        rs.getString("ruta_imagen"),
                         rs.getBoolean("activo")
                 );
 
@@ -63,9 +61,8 @@ public class ProductoDAO {
      * Inserta un nuevo producto, relacionándolo con su categoría (categoria_id).
      */
     public int insertar(Producto producto) throws SQLException {
-        String sql = "INSERT INTO producto "
-                + "(codigo, nombre, precio_venta, categoria_id, existencia, ruta_imagen, activo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO producto (codigo, nombre, precio_venta, categoria_id, existencia, activo) "
+                + "VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -75,8 +72,7 @@ public class ProductoDAO {
             ps.setBigDecimal(3, producto.getPrecioVenta());
             ps.setInt(4, producto.getCategoria().getId());
             ps.setInt(5, producto.getExistencia());
-            ps.setString(6, producto.getRutaImagen());
-            ps.setBoolean(7, producto.isActivo());
+            ps.setBoolean(6, producto.isActivo());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -87,6 +83,28 @@ public class ProductoDAO {
             }
         }
         throw new SQLException("No se pudo obtener el id generado para el producto.");
+    }
+
+    /**
+     * Actualiza un producto existente (por su id).
+     */
+    public void actualizar(Producto producto) throws SQLException {
+        String sql = "UPDATE producto SET codigo = ?, nombre = ?, precio_venta = ?, "
+                + "categoria_id = ?, existencia = ?, activo = ? WHERE id = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, producto.getCodigo());
+            ps.setString(2, producto.getNombre());
+            ps.setBigDecimal(3, producto.getPrecioVenta());
+            ps.setInt(4, producto.getCategoria().getId());
+            ps.setInt(5, producto.getExistencia());
+            ps.setBoolean(6, producto.isActivo());
+            ps.setInt(7, producto.getId());
+
+            ps.executeUpdate();
+        }
     }
 
     /**
@@ -104,15 +122,21 @@ public class ProductoDAO {
     }
 
     /**
-     * Indica si ya existe un producto con ese código.
+     * Indica si ya existe OTRO producto (distinto id) con ese código.
+     * Útil tanto para CREATE (idExcluido = null) como para UPDATE.
      */
-    public boolean existePorCodigo(String codigo) throws SQLException {
-        String sql = "SELECT 1 FROM producto WHERE LOWER(codigo) = LOWER(?)";
+    public boolean existePorCodigo(String codigo, Integer idExcluido) throws SQLException {
+        String sql = idExcluido == null
+                ? "SELECT 1 FROM producto WHERE LOWER(codigo) = LOWER(?)"
+                : "SELECT 1 FROM producto WHERE LOWER(codigo) = LOWER(?) AND id <> ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, codigo);
+            if (idExcluido != null) {
+                ps.setInt(2, idExcluido);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }

@@ -12,7 +12,7 @@ public final class DatabaseConnection {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/fact_appp_db";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "tu_password";
+    private static final String PASSWORD = "1234";
 
     private DatabaseConnection() {
     }
