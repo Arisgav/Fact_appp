@@ -135,7 +135,7 @@ public class ProductoController {
         } catch (SQLException e) {
             e.printStackTrace();
             mensaje(Alert.AlertType.ERROR,
-                    "No fue posible cargar las categorías desde la base de datos.\n" + e.getMessage());
+                    "No fue posible cargar las categorías desde la base de datos.");
         }
     }
 
@@ -146,7 +146,7 @@ public class ProductoController {
         } catch (SQLException e) {
             e.printStackTrace();
             mensaje(Alert.AlertType.ERROR,
-                    "No fue posible cargar los productos desde la base de datos.\n" + e.getMessage());
+                    "No fue posible cargar los productos desde la base de datos.");
         }
     }
 
@@ -258,7 +258,7 @@ public class ProductoController {
             cargarProductos();
         } catch (SQLException e) {
             e.printStackTrace();
-            mensaje(Alert.AlertType.ERROR, "No fue posible guardar el producto.\n" + e.getMessage());
+            mensaje(Alert.AlertType.ERROR, "No fue posible guardar el producto.");
         }
     }
 
@@ -297,7 +297,7 @@ public class ProductoController {
             cargarProductos();
         } catch (SQLException e) {
             e.printStackTrace();
-            mensaje(Alert.AlertType.ERROR, "No fue posible actualizar el producto.\n" + e.getMessage());
+            mensaje(Alert.AlertType.ERROR, "No fue posible actualizar el producto.");
         }
     }
 
@@ -323,7 +323,7 @@ public class ProductoController {
                 cargarProductos();
             } catch (SQLException e) {
                 e.printStackTrace();
-                mensaje(Alert.AlertType.ERROR, "No fue posible eliminar el producto.\n" + e.getMessage());
+                mensaje(Alert.AlertType.ERROR, "No fue posible eliminar el producto.");
             }
         }
     }
