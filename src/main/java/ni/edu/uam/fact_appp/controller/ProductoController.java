@@ -135,7 +135,7 @@ public class ProductoController {
         } catch (SQLException e) {
             e.printStackTrace();
             mensaje(Alert.AlertType.ERROR,
-                    "No fue posible cargar las categorías desde la base de datos.");
+                    "No fue posible cargar las categorías desde la base de datos.\n" + e.getMessage());
         }
     }
 
@@ -146,7 +146,7 @@ public class ProductoController {
         } catch (SQLException e) {
             e.printStackTrace();
             mensaje(Alert.AlertType.ERROR,
-                    "No fue posible cargar los productos desde la base de datos.");
+                    "No fue posible cargar los productos desde la base de datos.\n" + e.getMessage());
         }
     }
 

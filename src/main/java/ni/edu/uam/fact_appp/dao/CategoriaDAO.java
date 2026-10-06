@@ -12,10 +12,13 @@ import java.sql.SQLException;
 
 /**
  * DAO (Data Access Object) para la tabla "categoria".
+ * Encapsula todo el SQL relacionado a Categoria usando Connection + PreparedStatement.
  */
 public class CategoriaDAO {
 
-    /** Devuelve todas las categorías registradas. */
+    /**
+     * Devuelve todas las categorías registradas en la base de datos.
+     */
     public ObservableList<Categoria> listar() throws SQLException {
         ObservableList<Categoria> lista = FXCollections.observableArrayList();
         String sql = "SELECT id, nombre, activa FROM categoria ORDER BY nombre";
@@ -35,7 +38,9 @@ public class CategoriaDAO {
         return lista;
     }
 
-    /** Inserta una nueva categoría y devuelve el id generado. */
+    /**
+     * Inserta una nueva categoría y devuelve el id generado.
+     */
     public int insertar(Categoria categoria) throws SQLException {
         String sql = "INSERT INTO categoria (nombre, activa) VALUES (?, ?) RETURNING id";
 
@@ -53,17 +58,13 @@ public class CategoriaDAO {
                 }
             }
         }
-
         throw new SQLException("No se pudo obtener el id generado para la categoría.");
     }
 
+
     /** Actualiza una categoría existente. */
     public void actualizar(Categoria categoria) throws SQLException {
-        String sql = """
-                UPDATE categoria
-                SET nombre = ?, activa = ?
-                WHERE id = ?
-                """;
+        String sql = "UPDATE categoria SET nombre = ?, activa = ? WHERE id = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -75,7 +76,9 @@ public class CategoriaDAO {
         }
     }
 
-    /** Elimina una categoría por su id. */
+    /**
+     * Elimina una categoría por su id.
+     */
     public void eliminar(Integer id) throws SQLException {
         String sql = "DELETE FROM categoria WHERE id = ?";
 
@@ -87,14 +90,14 @@ public class CategoriaDAO {
         }
     }
 
-    /** Comprueba si existe una categoría con ese nombre. */
+    /** Indica si ya existe una categoría con ese nombre. */
     public boolean existePorNombre(String nombre) throws SQLException {
         return existePorNombre(nombre, null);
     }
 
     /**
-     * Comprueba si existe OTRA categoría con ese nombre.
-     * idExcluido se utiliza al actualizar para no contar la categoría actual.
+     * Indica si existe OTRA categoría con ese nombre.
+     * idExcluido permite usar el método durante UPDATE.
      */
     public boolean existePorNombre(String nombre, Integer idExcluido) throws SQLException {
         String sql;
@@ -120,10 +123,7 @@ public class CategoriaDAO {
         }
     }
 
-    /**
-     * Comprueba si una categoría tiene productos asociados.
-     * Se utiliza antes de eliminar una categoría.
-     */
+    /** Comprueba si una categoría tiene productos asociados. */
     public boolean tieneProductos(int categoriaId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM producto WHERE categoria_id = ?";
 
@@ -133,12 +133,9 @@ public class CategoriaDAO {
             ps.setInt(1, categoriaId);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
+                return rs.next() && rs.getInt(1) > 0;
             }
         }
-
-        return false;
     }
+
 }

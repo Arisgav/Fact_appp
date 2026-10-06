@@ -2,7 +2,6 @@ package ni.edu.uam.fact_appp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,13 +12,11 @@ import ni.edu.uam.fact_appp.dao.CategoriaDAO;
 import ni.edu.uam.fact_appp.model.Categoria;
 
 import java.sql.SQLException;
-import java.util.Locale;
 
 public class CategoriaController {
 
     @FXML private TextField txtNombreCategoria;
     @FXML private CheckBox chkActivaCategoria;
-    @FXML private TextField txtBuscarCategoria;
     @FXML private TableView<Categoria> tblCategorias;
 
     @FXML private TableColumn<Categoria, String> colNombreCategoria;
@@ -31,14 +28,7 @@ public class CategoriaController {
     @FXML private Button btnCerrarCategoria;
 
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();
-
-    /** Lista maestra: siempre contiene todas las categorías cargadas de la BD. */
     private final ObservableList<Categoria> categorias = FXCollections.observableArrayList();
-
-    /** Lista filtrada utilizada por el TableView. */
-    private FilteredList<Categoria> categoriasFiltradas;
-
-    /** Categoría seleccionada actualmente. null = modo nuevo. */
     private Categoria categoriaSeleccionada;
 
     @FXML
@@ -48,15 +38,13 @@ public class CategoriaController {
 
         chkActivaCategoria.setSelected(true);
 
-        categoriasFiltradas = new FilteredList<>(categorias, c -> true);
-        SortedList<Categoria> categoriasOrdenadas = new SortedList<>(categoriasFiltradas);
+        SortedList<Categoria> categoriasOrdenadas = new SortedList<>(categorias);
         categoriasOrdenadas.comparatorProperty().bind(tblCategorias.comparatorProperty());
         tblCategorias.setItems(categoriasOrdenadas);
 
-        txtBuscarCategoria.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltro());
-
         tblCategorias.getSelectionModel().selectedItemProperty().addListener(
-                (obs, anterior, actual) -> cargarEnFormulario(actual));
+                (obs, anterior, actual) -> cargarEnFormulario(actual)
+        );
 
         cargarCategorias();
         actualizarEstadoBotones();
@@ -68,23 +56,9 @@ public class CategoriaController {
             categorias.setAll(lista);
         } catch (SQLException e) {
             e.printStackTrace();
-            mensaje(Alert.AlertType.ERROR, "No fue posible cargar las categorías.");
+            mensaje(Alert.AlertType.ERROR,
+                    "No fue posible cargar las categorías.");
         }
-    }
-
-    private void aplicarFiltro() {
-        String texto = txtBuscarCategoria.getText() == null
-                ? ""
-                : txtBuscarCategoria.getText().trim().toLowerCase(Locale.ROOT);
-
-        categoriasFiltradas.setPredicate(categoria -> {
-            if (texto.isEmpty()) {
-                return true;
-            }
-
-            return categoria.getNombre() != null
-                    && categoria.getNombre().toLowerCase(Locale.ROOT).contains(texto);
-        });
     }
 
     private void cargarEnFormulario(Categoria categoria) {
@@ -93,12 +67,11 @@ public class CategoriaController {
         if (categoria == null) {
             txtNombreCategoria.clear();
             chkActivaCategoria.setSelected(true);
-            actualizarEstadoBotones();
-            return;
+        } else {
+            txtNombreCategoria.setText(categoria.getNombre());
+            chkActivaCategoria.setSelected(categoria.isActiva());
         }
 
-        txtNombreCategoria.setText(categoria.getNombre());
-        chkActivaCategoria.setSelected(categoria.isActiva());
         actualizarEstadoBotones();
     }
 
@@ -110,7 +83,10 @@ public class CategoriaController {
         btnQuitarCategoria.setDisable(!seleccionada);
     }
 
-    /** INSERT */
+    // ---------------------------------------------------------------
+    // CREATE
+    // ---------------------------------------------------------------
+
     @FXML
     private void guardarCategoria() {
         String nombre = txtNombreCategoria.getText().trim();
@@ -151,7 +127,10 @@ public class CategoriaController {
         }
     }
 
-    /** UPDATE */
+    // ---------------------------------------------------------------
+    // UPDATE
+    // ---------------------------------------------------------------
+
     @FXML
     private void actualizarCategoria() {
         if (categoriaSeleccionada == null) {
@@ -198,7 +177,10 @@ public class CategoriaController {
         }
     }
 
-    /** DELETE */
+    // ---------------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------------
+
     @FXML
     private void quitarCategoria() {
         if (categoriaSeleccionada == null) {
@@ -207,7 +189,6 @@ public class CategoriaController {
             return;
         }
 
-        // Integridad referencial: no eliminar si tiene productos.
         try {
             if (categoriaDAO.tieneProductos(categoriaSeleccionada.getId())) {
                 mensaje(Alert.AlertType.WARNING,
